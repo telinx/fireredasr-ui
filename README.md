@@ -21,15 +21,15 @@ FireRedASR 是一个高度精确的中文语音转文字项目。
 3. 创建虚拟环境：`python3 -m venv venv` 
 4. 激活该环境：`. venv/bin/activate`
 5. 安装依赖:`pip3 install -r requirements.txt`
-6. 点击从 [huggingface](https://huggingface.co/fireredteam/FireRedASR-AED-L)  下载模型，将页面中的几个文件下载后放入 `/pretrained_models/FireRedASR-AED-L`文件夹内
+6. 点击从 [huggingface](https://huggingface.co/FireRedTeam/FireRedASR-AED-L/tree/main)  下载模型，将页面中的几个文件下载后放入 `/pretrained_models/FireRedASR-AED-L`文件夹内
 
 ## Windows预打包版
 
-win10/11 提供了预打包版。下载解压后双击 `启动.bat` 即可
+win10/11 提供了预打包版。[点击下载](https://github.com/jianchang512/fireredasr-ui/releases) 解压后双击 `启动.bat` 即可
 
 ## API 地址:
 
-默认端口: http://127.0.0.1:5078/v1/audio/transcriptions
+默认地址: http://127.0.0.1:5078/v1
 
 
 **OpenAI SDK中使用**
@@ -60,8 +60,4 @@ print(transcript.text)
 
 
 ## Acknowledgements
-Thanks to the following open-source works:
-- [Qwen2-7B-Instruct](https://huggingface.co/Qwen/Qwen2-7B-Instruct)
-- [icefall/ASR_LLM](https://github.com/k2-fsa/icefall/tree/master/egs/speech_llm/ASR_LLM)
-- [WeNet](https://github.com/wenet-e2e/wenet)
-- [Speech-Transformer](https://github.com/kaituoxu/Speech-Transformer)
+- [小红书ASR/FireRedASR](https://github.com/FireRedTeam/FireRedASR) 
