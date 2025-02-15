@@ -16,7 +16,7 @@ FireRedASR 是一个高度精确的中文语音转文字项目。
 
 进入某个目录下，打开终端
 
-1. 拉取源码，执行命令 `git clone https://github.com/FireRedTeam/FireRedASR.git`
+1. 拉取源码，执行命令 `git clone https://github.com/jianchang512/fireredasr-ui.git`
 2. 进入源码目录 `cd FireRedASR`
 3. 创建虚拟环境：`python3 -m venv venv` 
 4. 激活该环境：`. venv/bin/activate`
