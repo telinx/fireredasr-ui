@@ -144,7 +144,20 @@ def uploadfile():
         file.save(filename_raw)
         # 保存文件到 /tmp 目录
         runffmpeg(['-y', '-i', filename_raw,'-ac','1','-ar','16000', '-c:a', 'pcm_s16le','-f','wav', filename_16k])
-        wavs=cut_audio(filename_16k,target_dir)
+        file_length=len(AudioSegment.from_file(filename_16k,format=filename_16k[-3:]))
+        if file_length>=30000:
+            wavs=cut_audio(filename_16k,target_dir)
+        else:
+            wavs=[{
+                "line":1,
+                "start_time":0,
+                "end_time":file_length,
+                "file":filename_16k,
+                "text":"",
+                'uttid':f'0_{file_length}',
+                'startraw':'00:00:00,000',
+                'endraw':ms_to_time_string(ms=file_length),
+            }]
         srts=asr_task(wavs,asr_type='aed')
         if response_format == 'text':
             return Response(". ".join([it['text'] for it in srts]), mimetype='text/plain')
