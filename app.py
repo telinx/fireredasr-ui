@@ -1,6 +1,6 @@
 HOST='127.0.0.1'
 PORT=5078
-BATCH=2
+BATCH=1
 from flask import Flask, request, jsonify,send_file,Response,render_template
 from pathlib import Path
 import os,random,sys,threading, webbrowser, time,datetime,hashlib,tempfile,logging,subprocess,torch,glob,re
@@ -121,7 +121,9 @@ def static_files(filename):
 def index():
     return render_template(  'index.html' )
 
-@app.route('/v1/audio/translations', methods=['POST'])
+
+
+@app.route('/v1/audio/transcriptions', methods=['POST','GET'])
 def uploadfile():
     try:
         if 'file' not in request.files:  # 检查是否上传了文件
@@ -131,7 +133,14 @@ def uploadfile():
         if file.filename == '':  # 检查是否选择了文件
             return jsonify({"code": 1, 'error': 'No selected file'}),500
         response_format=request.form.get('response_format','srt')
+        model=request.form.get('model','AED').upper()
+        if model not in ['AED','LLM']:
+            model='AED'
         
+        print(f'{model=}')
+        if not Path(f'{ROOT_DIR}/pretrained_models/FireRedASR-{model}-L/model.pth.tar').exists():
+            return jsonify({"code": 2, 'error': f'请下载 {model} 模型并放入 {ROOT_DIR}/pretrained_models/FireRedASR-{model}-L/'}),500
+
         # 获取文件扩展名
         # 使用时间戳生成文件名
         name=f'{time.time()}'
@@ -158,7 +167,7 @@ def uploadfile():
                 'startraw':'00:00:00,000',
                 'endraw':ms_to_time_string(ms=file_length),
             }]
-        srts=asr_task(wavs,asr_type='aed')
+        srts=asr_task(wavs,asr_type=model)
         if response_format == 'text':
             return Response(". ".join([it['text'] for it in srts]), mimetype='text/plain')
         if response_format=='json':
@@ -168,32 +177,33 @@ def uploadfile():
     except Exception as e:
         return jsonify({"code": 1, 'error': str(e)}),500
 
-def asr_task(wavs,asr_type='aed'):
-    model = FireRedAsr.from_pretrained(asr_type, f'{ROOT_DIR}/pretrained_models/FireRedASR-AED-L' if asr_type=='aed' else f'{ROOT_DIR}/pretrained_models/FireRedASR-LLM-L')
+def asr_task(wavs,asr_type='AED'):
+    model = FireRedAsr.from_pretrained(asr_type.lower(), f'{ROOT_DIR}/pretrained_models/FireRedASR-{asr_type}-L')
     
     idxs={}
     for i,it in enumerate(wavs):
         idxs[it['uttid']]=i
     wavs_chunks=[wavs[i:i+BATCH] for i in range(0,len(wavs),BATCH)]
+    use_gpu=1 if torch.cuda.is_available() else 0
+    param={
+        "use_gpu": use_gpu,
+        "beam_size": 1,
+        "nbest": 1,
+        "decode_max_len": 0,
+        "softmax_smoothing": 1.0,
+        "aed_length_penalty": 0.0,
+        "decode_min_len": 0,
+        "repetition_penalty": 1.0,
+        "llm_length_penalty": 0.0,
+        "eos_penalty": 1.0,
+        "temperature": 1.0
+    }
     for it in wavs_chunks:
         results = model.transcribe(
             [em['uttid'] for em in it],
             [em['file'] for em in it],
-            {
-            "use_gpu": 1 if torch.cuda.is_available() else 0,
-            "beam_size": 1,
-            "nbest": 1,
-            "decode_max_len": 0,
-            "softmax_smoothing": 1.0,
-            "aed_length_penalty": 0.0,
-            "eos_penalty": 1.0,
-            "decode_min_len": 0,
-            "repetition_penalty": 1.0,
-            "llm_length_penalty": 0.0,
-            "temperature": 1.0
-            }
+            param
         )
-        print(results)
         for result in results:
             wavs[idxs[result['uttid']]]['text']=result['text']
 
@@ -258,7 +268,10 @@ def cut_audio(audio_file,dir_name):
         })
 
     return data
-    
+ 
+
+
+
 if __name__ == '__main__':
     try:
         print(f"api接口地址  http://{HOST}:{PORT}")

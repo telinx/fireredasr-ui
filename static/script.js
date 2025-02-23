@@ -57,8 +57,7 @@ $(document).ready(function () {
 	$('#zz').removeClass('d-none');
 	let formData = new FormData();
     formData.append('file', file); 
-
-	{
+    formData.append('model', $('#model').val().toUpperCase()); 
 
     srtOutput.val('');
     downloadButton.prop('disabled', true);
@@ -80,8 +79,6 @@ $(document).ready(function () {
 		$('#zz').addClass('d-none');
       }
     });
-
-  }
 
 
   }
