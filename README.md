@@ -39,9 +39,9 @@ FireRedASR 是一个高度精确的中文语音转文字项目。
 
 ### 整合包主体下载
 
-整合包主体**247MB**, 较小，浏览器中打开该地址可直接下载
+整合包主体**1.7G**, 浏览器中打开该地址可直接下载
 
-https://github.com/jianchang512/fireredasr-ui/releases/download/v0.3/fireredASR-2025-0223.7z
+https://github.com/jianchang512/fireredasr-ui/releases/download/v0.3/fireredASR-2025-0224.7z
 下载后解压，如下图
 
 ![](https://img.pyvideotrans.com/file/1740320246309_image.png)
