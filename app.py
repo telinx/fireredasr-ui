@@ -12,12 +12,13 @@ from faster_whisper.vad import (
     VadOptions,
     get_speech_timestamps
 )
-from pydub import AudioSegment
-from fireredasr.models.fireredasr import FireRedAsr
+
 
 ROOT_DIR=Path(__file__).parent.as_posix()
 if sys.platform == 'win32':
     os.environ['PATH'] = ROOT_DIR + f';{ROOT_DIR}/ffmpeg;' + os.environ['PATH']
+
+
 
 STATIC_DIR=f'{ROOT_DIR}/static'
 LOGS_DIR=f'{ROOT_DIR}/logs'
@@ -36,6 +37,8 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 _file_handler.setFormatter(formatter)
 logger.addHandler(_file_handler)
 
+from pydub import AudioSegment
+from fireredasr.models.fireredasr import FireRedAsr
 
 app = Flask(__name__, template_folder=f'{ROOT_DIR}/templates')
 CORS(app)

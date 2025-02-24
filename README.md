@@ -49,7 +49,7 @@ https://github.com/jianchang512/fireredasr-ui/releases/download/v0.3/fireredASR-
 
 ### 下载 AED 模型
 
-这个比较简单，仅需要下载一个模型文件，然后将下载的  `model.pth.tar` 文件放到整合包目录的  `pretrained_models/FireRedASR-AED-L` 文件夹内即可
+这个比较简单，仅需要下载一个模型文件，然后将下载的  `model.pth.tar` 文件放到整合包目录的  `pretrained_models/FireRedASR-AED-L` 文件夹内即可,**不要解压不要解压该tar文件**
 
 下载地址: 
 https://huggingface.co/FireRedTeam/FireRedASR-AED-L/resolve/main/model.pth.tar?download=true
@@ -67,7 +67,7 @@ https://huggingface.co/FireRedTeam/FireRedASR-AED-L/resolve/main/model.pth.tar?d
 
 https://huggingface.co/FireRedTeam/FireRedASR-LLM-L/resolve/main/model.pth.tar?download=true
 
-将下载的  `model.pth.tar`  文件放到整合包的 `pretrained_models/FireRedASR-LLM-L` 文件夹内，注意文件夹名字中含有`LLM`，如下图，千万莫要搞错。
+将下载的  `model.pth.tar`  文件放到整合包的 `pretrained_models/FireRedASR-LLM-L` 文件夹内，注意文件夹名字中含有`LLM`，如下图，千万莫要搞错。**不要解压不要解压该tar文件**
 
 ![](https://img.pyvideotrans.com/file/1740319032881_image.png)
 

@@ -62,7 +62,7 @@ $(document).ready(function () {
     srtOutput.val('');
     downloadButton.prop('disabled', true);
     $.ajax({
-      url: '/v1/audio/translations', 
+      url: '/v1/audio/transcriptions', 
       type: 'POST',
       data: formData,
 	  timeout:86400000,
