@@ -1,9 +1,10 @@
-HOST='127.0.0.1'
-PORT=5078
+
+HOST='0.0.0.0'
+PORT=10096
 BATCH=1
 from flask import Flask, request, jsonify,send_file,Response,render_template
 from pathlib import Path
-import os,random,sys,threading, webbrowser, time,datetime,hashlib,tempfile,logging,subprocess,torch,glob,re
+import os,random,sys,threading, webbrowser, time,datetime,hashlib,tempfile,logging,subprocess,torch,glob,re,shutil
 from waitress import serve
 from flask_cors import CORS
 from datetime import timedelta
@@ -176,6 +177,18 @@ def uploadfile():
         if response_format=='json':
             return jsonify({"text":". ".join([it['text'] for it in srts])})
         result=[f"{it['line']}\n{it['startraw']} --> {it['endraw']}\n{it['text']}" for it in srts]
+
+        if os.path.isfile(filename_raw):
+            os.remove(filename_raw)
+            print(f"文件 {filename_raw} 已删除。")
+        if os.path.isfile(filename_16k):
+            os.remove(filename_16k)
+            print(f"文件 {filename_16k} 已删除。")
+        if os.path.exists(target_dir):
+            shutil.rmtree(target_dir)
+            print(f"文件夹 {target_dir} 及其所有内容已成功删除。")
+   
+
         return Response("\n\n".join(result), mimetype='text/plain')
     except Exception as e:
         return jsonify({"code": 1, 'error': str(e)}),500
@@ -277,10 +290,13 @@ def cut_audio(audio_file,dir_name):
 
 if __name__ == '__main__':
     try:
-        print(f"api接口地址  http://{HOST}:{PORT}")
-        openurl(f'http://{HOST}:{PORT}')
-        serve(app, host=HOST, port=PORT,threads=4)
+        print(f"sssapi接口地址  http://{HOST}:{PORT}")
+        #openurl(f'http://{HOST}:{PORT}')
+        #serve(app, host=HOST, port=PORT,threads=4)
+        app.run(host='0.0.0.0', port=PORT)
+        print(f"api?~N??~O??~\??~]~@  http://{HOST}:{PORT}")
     except Exception as e:
+        print(f"api?~N??~O??~\??~]~@  httpss://{HOST}:{PORT}")
         logger.error(f"An error occurred: {str(e)}")
         logger.error(traceback.format_exc())
     
